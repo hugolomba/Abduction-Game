@@ -8,8 +8,9 @@ body {
 }
 
 canvas {
-  border: 5px solid purple;
+  border: 5px solid black;
   display: none;
+  background-image: url(../img/fundo.png);
 }
 
 #start-screen {
