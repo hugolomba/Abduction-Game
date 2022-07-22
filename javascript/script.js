@@ -58,32 +58,40 @@ startBtn.addEventListener("click", () => {
 document.addEventListener("keydown", (e) => {
   const key = e.code;
   if (key === "ArrowUp") {
-    ufo.speedY -= 1;
-    console.log("Up");
-    ufo.clear();
-    ufo.newPos();
-    ufo.draw();
+    if (ufo.y > 10) {
+      ufo.speedY -= 1;
+      console.log("Up");
+      ufo.clear();
+      ufo.newPos();
+      ufo.draw();
+    }
   }
   if (key === "ArrowDown") {
-    ufo.speedY += 1;
-    console.log("down");
-    ufo.clear();
-    ufo.newPos();
-    ufo.draw();
+    if (ufo.y < 200) {
+      ufo.speedY += 1;
+      console.log("down");
+      ufo.clear();
+      ufo.newPos();
+      ufo.draw();
+    }
   }
   if (key === "ArrowLeft") {
-    ufo.speedX -= 1;
-    console.log("left");
-    ufo.clear();
-    ufo.newPos();
-    ufo.draw();
+    if (ufo.x > 7) {
+      ufo.speedX -= 1;
+      console.log("left");
+      ufo.clear();
+      ufo.newPos();
+      ufo.draw();
+    }
   }
   if (key === "ArrowRight") {
-    ufo.speedX += 1;
-    console.log("right");
-    ufo.clear();
-    ufo.newPos();
-    ufo.draw();
+    if (ufo.x < 757) {
+      ufo.speedX += 1;
+      console.log("right");
+      ufo.clear();
+      ufo.newPos();
+      ufo.draw();
+    }
   }
 });
 
