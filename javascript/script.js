@@ -38,6 +38,7 @@ class Component {
 // objetos
 
 const ufo = new Component("./img/ufo2.png", 136, 65, 100, 100);
+const light = new Component("./img/ufolight.png");
 
 // Troca da tela de início para o canvas ao apaertar o botão Start
 
@@ -59,7 +60,7 @@ document.addEventListener("keydown", (e) => {
   const key = e.code;
   if (key === "ArrowUp") {
     if (ufo.y > 10) {
-      ufo.speedY -= 1;
+      ufo.speedY -= 15;
       console.log("Up");
       ufo.clear();
       ufo.newPos();
@@ -67,8 +68,8 @@ document.addEventListener("keydown", (e) => {
     }
   }
   if (key === "ArrowDown") {
-    if (ufo.y < 200) {
-      ufo.speedY += 1;
+    if (ufo.y < 230) {
+      ufo.speedY += 15;
       console.log("down");
       ufo.clear();
       ufo.newPos();
@@ -77,7 +78,7 @@ document.addEventListener("keydown", (e) => {
   }
   if (key === "ArrowLeft") {
     if (ufo.x > 7) {
-      ufo.speedX -= 1;
+      ufo.speedX -= 15;
       console.log("left");
       ufo.clear();
       ufo.newPos();
@@ -86,7 +87,7 @@ document.addEventListener("keydown", (e) => {
   }
   if (key === "ArrowRight") {
     if (ufo.x < 757) {
-      ufo.speedX += 1;
+      ufo.speedX += 15;
       console.log("right");
       ufo.clear();
       ufo.newPos();
@@ -98,4 +99,29 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keyup", () => {
   ufo.speedX = 0;
   ufo.speedY = 0;
+});
+
+// const light = new Image();
+// light.src = "./img/ufolight.png";
+
+document.addEventListener("keydown", (e) => {
+  const key = e.code;
+  console.log(e, e.code);
+  if (ufo.y > 230) {
+    if (key === "Space") {
+      let lightX = ufo.x + 12;
+      let lightY = ufo.y + 60;
+      ctx.drawImage(light.img, lightX, lightY, 113, 168);
+    }
+  }
+});
+
+document.addEventListener("keyup", (e) => {
+  const key = e.code;
+  if (key === "Space") {
+    console.log("soltou");
+    let lightX = ufo.x + 12;
+    let lightY = ufo.y + 63;
+    ctx.clearRect(lightX, lightY, 113, 168);
+  }
 });
