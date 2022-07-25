@@ -16,11 +16,17 @@ const myGameArea = {
   clear: function () {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   },
+
+  score: function () {
+    const points = Math.floor(this.frames / 5);
+    this.ctx.font = "30px serif";
+    this.ctx.fillText(`Score: ${points}`, 750, 60);
+  },
 };
 
 function updateObstacles() {
   myGameArea.frames += 1;
-  if (myGameArea.frames % 10 === 0) {
+  if (myGameArea.frames % 120 === 0) {
     const obstacleArr = [
       "./img/obstacles/comet.png",
       "./img/obstacles/asteroid.png",
@@ -104,8 +110,9 @@ function updateGameArea() {
   updateObstacles();
 
   drawLives();
-  myGameArea.ctx.fillText("Score: 999", 750, 60);
-  myGameArea.ctx.font = "30px serif";
+  myGameArea.score();
+  // myGameArea.ctx.fillText("Score: 999", 750, 60);
+  // myGameArea.ctx.font = "30px serif";
 
   // console.log("x: ", ufo.x, "Y: ", ufo.y);
 
