@@ -1,0 +1,17 @@
+#game-over {
+  /* display: none; */
+  width: 500px;
+  height: 300px;
+  border: 10px solid red;
+  position: absolute;
+  font-family: Comication;
+  font-size: 40px;
+  font-weight: 100;
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+  justify-content: flex-start;
+  align-items: center;
+  background-image: url("./img/other/gameover.gif");
+}

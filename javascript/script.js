@@ -6,6 +6,8 @@ const myGameArea = {
   canvas: document.getElementById("canvas"),
   startScreen: document.getElementById("start-screen"),
   startBtn: document.getElementById("start-btn"),
+  gameOverScreen: document.getElementById("game-over"),
+  PlayAgainBtn: document.getElementById("play-again-btn"),
   ctx: this.canvas.getContext("2d"),
   stop: false,
   frames: 0,
@@ -18,10 +20,11 @@ const myGameArea = {
 
 function updateObstacles() {
   myGameArea.frames += 1;
-  if (myGameArea.frames % 60 === 0) {
+  if (myGameArea.frames % 10 === 0) {
     const obstacleArr = [
       "./img/obstacles/comet.png",
       "./img/obstacles/asteroid.png",
+      "./img/obstacles/missile.png",
     ];
 
     const yArr = [250, 170, 90];
@@ -49,7 +52,10 @@ function updateObstacles() {
     const crash = ufo.crashWith(element);
     if (crash) {
       myGameArea.live -= 1;
-      if (myGameArea.live < 1) myGameArea.stop = true;
+      if (myGameArea.live < 1) {
+        myGameArea.stop = true;
+        myGameArea.gameOverScreen.style.display = "flex";
+      }
       myObstacles.splice(i, 1);
     }
     if (element.x < -100) {
@@ -96,16 +102,7 @@ function updateGameArea() {
   ufo.drawLight();
 
   updateObstacles();
-  // console.log(myObstacles);
 
-  // comet.draw();
-  // comet.move();
-  // asteroid.draw();
-  // asteroid.move();
-  // missile.draw();
-  // missile.move();
-
-  // myGameArea.ctx.drawImage(lifeHearts.full, 30, 30, 95, 26);
   drawLives();
   myGameArea.ctx.fillText("Score: 999", 750, 60);
   myGameArea.ctx.font = "30px serif";
@@ -136,7 +133,7 @@ class Obstacle {
     // this.height = 62;
     this.x = x;
     this.y = y;
-    this.speed = 10;
+    this.speed = 5;
     // this.targetX = this.x;
   }
 
@@ -158,10 +155,10 @@ class Obstacle {
     return this.y + this.height;
   }
   left() {
-    return this.x + 10;
+    return this.x;
   }
   right() {
-    return this.x + this.width - 10;
+    return this.x + this.width;
   }
 }
 
@@ -231,16 +228,16 @@ class Component {
   }
 
   top() {
-    return this.y;
+    return this.y + 20;
   }
   bottom() {
-    return this.y + this.height;
+    return this.y + this.height - 20;
   }
   left() {
-    return this.x;
+    return this.x + 10;
   }
   right() {
-    return this.x + this.width;
+    return this.x + this.width - 10;
   }
 
   crashWith(obstacle) {
@@ -279,6 +276,10 @@ myGameArea.startBtn.addEventListener("click", () => {
   myGameArea.startScreen.style.display = "none";
   myGameArea.canvas.style.display = "inline";
   updateGameArea();
+});
+
+myGameArea.PlayAgainBtn.addEventListener("click", () => {
+  location.reload();
 });
 
 // manipulação do Canvas

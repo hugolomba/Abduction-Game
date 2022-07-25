@@ -42,6 +42,14 @@ canvas {
   background-color: white;
 }
 
+#play-again-btn {
+  width: 180px;
+  height: 50px;
+  font-size: 30px;
+  border-radius: 10px;
+  background-color: white;
+}
+
 .invisible {
   display: none;
 }
@@ -61,4 +69,28 @@ footer p {
 footer img {
   width: 27px;
   height: 27px;
+}
+
+#game-over {
+  display: none;
+  width: 400px;
+  height: 260px;
+  border-radius: 20px;
+  /* border: 10px solid red; */
+  position: absolute;
+  font-family: Comication;
+  font-size: 40px;
+  font-weight: 100;
+  font-style: normal;
+  /* display: flex; */
+  flex-direction: column;
+  align-content: stretch;
+  justify-content: space-evenly;
+  align-items: center;
+  background-image: url(./img/gameoverbackground.png);
+  background-color: white;
+}
+
+#game-over h1 {
+  margin: 10px;
 }
