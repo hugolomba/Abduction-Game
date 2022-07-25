@@ -1,42 +1,176 @@
 console.log("Js conectado");
 
+const myObstacles = [];
+
 const myGameArea = {
   canvas: document.getElementById("canvas"),
   startScreen: document.getElementById("start-screen"),
   startBtn: document.getElementById("start-btn"),
   ctx: this.canvas.getContext("2d"),
   stop: false,
+  frames: 0,
+  live: 3,
 
   clear: function () {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   },
 };
 
+function updateObstacles() {
+  myGameArea.frames += 1;
+  if (myGameArea.frames % 60 === 0) {
+    const obstacleArr = [
+      "./img/obstacles/comet.png",
+      "./img/obstacles/asteroid.png",
+    ];
+
+    const yArr = [250, 170, 90];
+    const randomY = Math.floor(Math.random() * yArr.length);
+    const randomIndex = Math.floor(Math.random() * obstacleArr.length);
+
+    // myObstacles.push(new Obstacle("./img/obstacles/comet.png", 900, 70));
+    myObstacles.push(
+      new Obstacle(obstacleArr[randomIndex], 900, yArr[randomY])
+    );
+    // myObstacles.push(new Obstacle("./img/obstacles/asteroid.png", 250));
+    // console.log(myObstacles);
+  }
+
+  // for (let i = 0; i < myObstacles.length; i++) {
+  //   // myObstacles[i].x -= 0.1;
+  // }
+  // myObstacles.forEach((element) => {
+  //   myObstacles[element].x -= 1;
+  // });
+
+  myObstacles.forEach((element, i) => {
+    element.move();
+    element.draw();
+    const crash = ufo.crashWith(element);
+    if (crash) {
+      myGameArea.live -= 1;
+      if (myGameArea.live < 1) myGameArea.stop = true;
+      myObstacles.splice(i, 1);
+    }
+    if (element.x < -100) {
+      myObstacles.splice(i, 1);
+    }
+
+    // console.log("aqui");
+  });
+
+  // for (let i = 0; i < myObstacles.length; i++) {
+  //   myObstacles[i].move();
+  //   myObstacles[i].draw();
+  // }
+}
+
+// function checkCrash() {
+//   if (ufo.x === comet.x) {
+//     myGameArea.stop = true;
+//     console.log("Comet Crash");
+//   }
+//   if (ufo.x === asteroid.x) {
+//     myGameArea.stop = true;
+//     console.log("Asteroid Crash");
+//   }
+// }
+
+function drawLives() {
+  if (myGameArea.live === 3)
+    myGameArea.ctx.drawImage(lifeHearts.full, 30, 30, 95, 26);
+  if (myGameArea.live === 2)
+    myGameArea.ctx.drawImage(lifeHearts.twoHearts, 30, 30, 95, 26);
+  if (myGameArea.live === 1)
+    myGameArea.ctx.drawImage(lifeHearts.oneHeart, 30, 30, 95, 26);
+  if (myGameArea.live === 0)
+    myGameArea.ctx.drawImage(lifeHearts.empty, 30, 30, 95, 26);
+}
+
 function updateGameArea() {
+  // checkCrash();
   myGameArea.clear();
   // ufo.newPos();
   ufo.move();
   ufo.draw();
   ufo.drawLight();
 
-  console.log(ufo.x, ufo.y);
+  updateObstacles();
+  // console.log(myObstacles);
+
+  // comet.draw();
+  // comet.move();
+  // asteroid.draw();
+  // asteroid.move();
+  // missile.draw();
+  // missile.move();
+
+  // myGameArea.ctx.drawImage(lifeHearts.full, 30, 30, 95, 26);
+  drawLives();
+  myGameArea.ctx.fillText("Score: 999", 750, 60);
+  myGameArea.ctx.font = "30px serif";
+
+  // console.log("x: ", ufo.x, "Y: ", ufo.y);
 
   if (!myGameArea.stop) {
     requestAnimationFrame(updateGameArea);
   }
 }
 
-function teste() {
-  console.log("teste");
-}
-
 // setInterval(updateGameArea, 50000);
 
 // Classes
+
+class Obstacle {
+  constructor(img, x, y) {
+    const image = new Image();
+    image.src = img;
+    image.onload = () => {
+      this.img = image;
+      this.width = image.width;
+      this.height = image.height;
+    };
+    // this.img = new Image();
+    // this.img.src = img;
+    // this.width = 91;
+    // this.height = 62;
+    this.x = x;
+    this.y = y;
+    this.speed = 10;
+    // this.targetX = this.x;
+  }
+
+  draw() {
+    if (!this.img) return;
+    myGameArea.ctx.drawImage(this.img, this.x, this.y);
+  }
+
+  move() {
+    this.x = this.x - this.speed;
+    // this.x += (this.x - this.x) * 0.1;
+    // if (this.x <= 0) this.x = 800;
+  }
+
+  top() {
+    return this.y;
+  }
+  bottom() {
+    return this.y + this.height;
+  }
+  left() {
+    return this.x + 10;
+  }
+  right() {
+    return this.x + this.width - 10;
+  }
+}
+
 class Component {
   constructor(width, height, x, y) {
     this.img = new Image();
     this.img.src = "./img/ufo2.png";
+    this.img2 = new Image();
+    this.img2.src = "./img/ufo2-esp.png";
     this.width = width;
     this.height = height;
     this.x = x;
@@ -53,8 +187,8 @@ class Component {
 
   draw() {
     // this.img.addEventListener("load", () =>
-
-    myGameArea.ctx.drawImage(this.img, this.x, this.y);
+    if (this.y < 210) myGameArea.ctx.drawImage(this.img, this.x, this.y);
+    if (this.y >= 210) myGameArea.ctx.drawImage(this.img2, this.x, this.y);
     // );
   }
 
@@ -96,16 +230,48 @@ class Component {
     }
   }
 
-  // newPos() {
-  //   this.x += this.speedX;
-  //   this.y += this.speedY;
-  // }
+  top() {
+    return this.y;
+  }
+  bottom() {
+    return this.y + this.height;
+  }
+  left() {
+    return this.x;
+  }
+  right() {
+    return this.x + this.width;
+  }
+
+  crashWith(obstacle) {
+    return !(
+      this.bottom() < obstacle.top() ||
+      this.top() > obstacle.bottom() ||
+      this.right() < obstacle.left() ||
+      this.left() > obstacle.right()
+    );
+  }
 }
 
 // objetos
 
 // const light = new Component("./img/ufolight.png");
 const ufo = new Component(136, 65, 100, 100);
+
+// const comet = new Obstacle("./img/obstacles/comet.png", 800, 90);
+// const asteroid = new Obstacle("./img/obstacles/asteroid.png", 900, 170);
+// const missile = new Obstacle("./img/obstacles/missile.png", 1000, 250);
+
+const lifeHearts = new Object();
+
+lifeHearts.full = new Image();
+lifeHearts.full.src = "./img/life-full.png";
+lifeHearts.twoHearts = new Image();
+lifeHearts.twoHearts.src = "./img/life-2.png";
+lifeHearts.oneHeart = new Image();
+lifeHearts.oneHeart.src = "./img/life-1.png";
+lifeHearts.empty = new Image();
+lifeHearts.empty.src = "./img/life-empty.png";
 
 // Troca da tela de início para o canvas ao apaertar o botão Start
 
@@ -133,7 +299,7 @@ document.addEventListener("keydown", (e) => {
     }
   }
   if (key === "ArrowDown") {
-    if (ufo.y < 195) {
+    if (ufo.y < 220) {
       ufo.moveDown();
       // ufo.clear();
       // ufo.newPos();
@@ -165,17 +331,7 @@ document.addEventListener("keydown", (e) => {
 
 document.addEventListener("keyup", (e) => {
   const key = e.code;
-  if (key === "Space") ufo.lightOn = false;
+  if (key === "Space") {
+    ufo.lightOn = false;
+  }
 });
-
-// const light = new Image();
-// light.src = "./img/ufolight.png";
-
-// document.addEventListener("keyup", (e) => {
-//   const key = e.code;
-//   if (key === "Space") {
-//     let lightX = ufo.x + 12;
-//     let lightY = ufo.y + 65;
-//     myGameArea.ctx.clearRect(lightX, lightY, 113, 168);
-//   }
-// });

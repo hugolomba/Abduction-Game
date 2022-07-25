@@ -5,6 +5,8 @@
 body {
   display: flex;
   justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
 }
 
 canvas {
@@ -42,4 +44,21 @@ canvas {
 
 .invisible {
   display: none;
+}
+
+footer {
+  display: flex;
+  flex-direction: row;
+  font-size: 25px;
+  align-items: center;
+}
+
+footer p {
+  margin: 10px;
+  margin-right: 20px;
+}
+
+footer img {
+  width: 27px;
+  height: 27px;
 }
