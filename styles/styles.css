@@ -2,6 +2,17 @@
   font-family: Comication;
   src: url(../Comication.ttf);
 }
+
+@font-face {
+  font-family: Slimfit;
+  src: url(../slimfit_shadowed_demo.otf);
+}
+
+@font-face {
+  font-family: SunshineShadow;
+  src: url(../KGSummerSunshineShadow.ttf);
+}
+
 body {
   display: flex;
   justify-content: space-around;
@@ -16,20 +27,38 @@ canvas {
 }
 
 #start-screen {
-  font-family: Comication;
+  font-family: SunshineShadow;
   border: 5px solid black;
   width: 900px;
   height: 500px;
   background-image: url(../img/fundo.png);
+
   display: flex;
   flex-direction: column;
   align-content: stretch;
   justify-content: center;
   align-items: center;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+#start-screen-elements {
+  width: 600px;
+  height: 300px;
+  border-radius: 40px;
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+#start-screen-elements h1 {
+  margin: 0;
 }
 
 #start-screen h1 {
-  font-size: 90px;
+  font-size: 70px;
   font-weight: 100;
   font-style: normal;
 }
@@ -78,8 +107,8 @@ footer img {
   border-radius: 20px;
   /* border: 10px solid red; */
   position: absolute;
-  font-family: Comication;
-  font-size: 40px;
+  font-family: SunshineShadow;
+  font-size: 25px;
   font-weight: 100;
   font-style: normal;
   /* display: flex; */
@@ -87,8 +116,8 @@ footer img {
   align-content: stretch;
   justify-content: space-evenly;
   align-items: center;
-  background-image: url(./img/gameoverbackground.png);
-  background-color: white;
+  /* background-image: url(./img/gameoverbackground.png); */
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 #game-over h1 {

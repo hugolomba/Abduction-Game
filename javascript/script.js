@@ -1,6 +1,8 @@
 console.log("Js conectado");
 
 const myObstacles = [];
+const myNpc = [];
+const capturedNpc = [];
 
 const myGameArea = {
   canvas: document.getElementById("canvas"),
@@ -12,20 +14,22 @@ const myGameArea = {
   stop: false,
   frames: 0,
   live: 3,
+  points: 0,
 
   clear: function () {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   },
 
   score: function () {
-    const points = Math.floor(this.frames / 5);
+    // this.points = Math.floor(this.frames / 100);
     this.ctx.font = "30px serif";
-    this.ctx.fillText(`Score: ${points}`, 750, 60);
+    this.ctx.fillText(`Score: ${this.points}`, 750, 60);
   },
 };
 
 function updateObstacles() {
   myGameArea.frames += 1;
+  // if (myGameArea.frames % 30 === 0) myGameArea.points += 1; // pontuação
   if (myGameArea.frames % 120 === 0) {
     const obstacleArr = [
       "./img/obstacles/comet.png",
@@ -41,16 +45,7 @@ function updateObstacles() {
     myObstacles.push(
       new Obstacle(obstacleArr[randomIndex], 900, yArr[randomY])
     );
-    // myObstacles.push(new Obstacle("./img/obstacles/asteroid.png", 250));
-    // console.log(myObstacles);
   }
-
-  // for (let i = 0; i < myObstacles.length; i++) {
-  //   // myObstacles[i].x -= 0.1;
-  // }
-  // myObstacles.forEach((element) => {
-  //   myObstacles[element].x -= 1;
-  // });
 
   myObstacles.forEach((element, i) => {
     element.move();
@@ -58,6 +53,8 @@ function updateObstacles() {
     const crash = ufo.crashWith(element);
     if (crash) {
       myGameArea.live -= 1;
+      myGameArea.points -= 10;
+
       if (myGameArea.live < 1) {
         myGameArea.stop = true;
         myGameArea.gameOverScreen.style.display = "flex";
@@ -67,26 +64,119 @@ function updateObstacles() {
     if (element.x < -100) {
       myObstacles.splice(i, 1);
     }
-
-    // console.log("aqui");
   });
-
-  // for (let i = 0; i < myObstacles.length; i++) {
-  //   myObstacles[i].move();
-  //   myObstacles[i].draw();
-  // }
 }
 
-// function checkCrash() {
-//   if (ufo.x === comet.x) {
-//     myGameArea.stop = true;
-//     console.log("Comet Crash");
-//   }
-//   if (ufo.x === asteroid.x) {
-//     myGameArea.stop = true;
-//     console.log("Asteroid Crash");
-//   }
-// }
+// img: ,
+// name: ,
+// type: ,
+// value: ,
+
+const obstacleArr = [
+  {
+    img: "./img/npc/cow2.png",
+    name: "cow",
+    type: "good",
+    value: 100,
+  },
+  {
+    img: "./img/npc/boy2.png",
+    name: "boy",
+    type: "good",
+    value: 100,
+  },
+  {
+    img: "./img/npc/girl.png",
+    name: "Girl",
+    type: "good",
+    value: 100,
+  },
+  {
+    img: "./img/npc/girl.png",
+    name: "radioactive",
+    type: "bad",
+    value: -200,
+  },
+  // {
+  //   img: ,
+  //   name: ,
+  //   type: ,
+  //   value: ,
+  // },
+];
+
+function updateNpc() {
+  if (myGameArea.frames % 60 === 0) {
+    const npcArr = [
+      "./img/npc/cow2.png",
+      "./img/npc/boy2.png",
+      "./img/npc/girl.png",
+    ];
+    // const npcArr = [
+    //   {
+    //     img: "./img/npc/cow2.png",
+    //     name: "cow",
+    //     type: "good",
+    //     value: 100,
+    //   },
+    //   {
+    //     img: "./img/npc/boy2.png",
+    //     name: "boy",
+    //     type: "good",
+    //     value: 100,
+    //   },
+    //   {
+    //     img: "./img/npc/girl.png",
+    //     name: "Girl",
+    //     type: "good",
+    //     value: 100,
+    //   },
+    //   {
+    //     img: "./img/npc/girl.png",
+    //     name: "radioactive",
+    //     type: "bad",
+    //     value: -200,
+    //   },
+    //   // {
+    //   //   img: ,
+    //   //   name: ,
+    //   //   type: ,
+    //   //   value: ,
+    //   // },
+    // ];
+
+    const xArr = [50, 150, 300, 450, 600, 750, 900];
+    const randomX = Math.floor(Math.random() * xArr.length);
+    const randomIndex = Math.floor(Math.random() * npcArr.length);
+
+    // myObstacles.push(new Obstacle("./img/obstacles/comet.png", 900, 70));
+    myNpc.push(new Npc(npcArr[randomIndex], xArr[randomX], 370));
+  }
+
+  myNpc.forEach((element, i) => {
+    // element.move();
+    element.clear();
+    element.draw();
+
+    // if (myNpc.length > 10) myNpc.splice(0, 4);
+
+    const crash = ufo.crashWithLight(element);
+    if (ufo.lightOn) {
+      if (crash) {
+        // console.log("acertou");
+        myNpc.splice(i, 1);
+        myGameArea.points += 100;
+        // let capturedNpc = element;
+
+        console.log(">>>>>>Crash");
+        capturedNpc.push(element);
+        console.log(capturedNpc);
+        // if (element.img.src === "./img/npc/girl.png")
+        //   console.log("ABDUZIU UMA MENINA");
+      }
+    }
+  });
+}
 
 function drawLives() {
   if (myGameArea.live === 3)
@@ -100,21 +190,16 @@ function drawLives() {
 }
 
 function updateGameArea() {
-  // checkCrash();
   myGameArea.clear();
-  // ufo.newPos();
+  updateNpc();
   ufo.move();
   ufo.draw();
   ufo.drawLight();
 
   updateObstacles();
-
+  // console.log(myNpc);
   drawLives();
   myGameArea.score();
-  // myGameArea.ctx.fillText("Score: 999", 750, 60);
-  // myGameArea.ctx.font = "30px serif";
-
-  // console.log("x: ", ufo.x, "Y: ", ufo.y);
 
   if (!myGameArea.stop) {
     requestAnimationFrame(updateGameArea);
@@ -134,14 +219,10 @@ class Obstacle {
       this.width = image.width;
       this.height = image.height;
     };
-    // this.img = new Image();
-    // this.img.src = img;
-    // this.width = 91;
-    // this.height = 62;
+
     this.x = x;
     this.y = y;
     this.speed = 5;
-    // this.targetX = this.x;
   }
 
   draw() {
@@ -169,6 +250,59 @@ class Obstacle {
   }
 }
 
+class Npc {
+  constructor(img, x, y) {
+    const image = new Image();
+    image.src = img;
+    image.onload = () => {
+      this.img = image;
+      this.width = image.width;
+      this.height = image.height;
+    };
+
+    this.x = x;
+    this.y = y;
+    this.speed = 5;
+  }
+
+  draw() {
+    if (!this.img) return;
+    myGameArea.ctx.drawImage(this.img, this.x, this.y);
+  }
+
+  clear() {
+    myGameArea.ctx.clearRect(this.x, this.y, this.width, this.height);
+  }
+
+  move() {
+    this.x = this.x - this.speed;
+    // this.x += (this.x - this.x) * 0.1;
+    // if (this.x <= 0) this.x = 800;
+  }
+
+  top() {
+    return this.y;
+  }
+  bottom() {
+    return this.y + this.height;
+  }
+  left() {
+    return this.x;
+  }
+  right() {
+    return this.x + this.width;
+  }
+
+  crashWithLight(obstacle) {
+    return !(
+      this.bottom() < obstacle.top() ||
+      this.top() > obstacle.bottom() ||
+      this.right() < obstacle.left() ||
+      this.left() > obstacle.right()
+    );
+  }
+}
+
 class Component {
   constructor(width, height, x, y) {
     this.img = new Image();
@@ -185,6 +319,8 @@ class Component {
     this.light = new Image();
     this.light.src = "./img/ufolight.png";
     this.lightOn = false;
+    this.lightX = 0;
+    this.lightY = 0;
     // this.speedX = 0;
     // this.speedY = 0;
   }
@@ -227,10 +363,13 @@ class Component {
 
   drawLight() {
     if (this.y > 225 && this.lightOn) {
-      console.log("luz");
-      let lightX = this.x + 12;
-      let lightY = this.y + 60;
-      myGameArea.ctx.drawImage(this.light, lightX, lightY, 113, 168);
+      this.lightX = this.x + 12;
+      this.lightY = this.y + 60;
+      // let lightX = this.x + 12;
+      // let lightY = this.y + 60;
+      myGameArea.ctx.drawImage(this.light, this.lightX, this.lightY, 113, 168);
+
+      // console.log(`lightX: ${this.lightX} LightY: ${this.lightY}`);
     }
   }
 
@@ -255,16 +394,46 @@ class Component {
       this.left() > obstacle.right()
     );
   }
+
+  topLight() {
+    // return this.lightY;
+  }
+  bottomLight() {
+    return this.lightY + this.height + 200;
+  }
+  leftLight() {
+    return this.lightX + 40;
+  }
+  rightLight() {
+    return this.lightX + this.width - 40; // lado direito da luz
+  }
+
+  // topLight() {
+  //   return this.lightY;
+  // }
+  // bottomLight() {
+  //   return this.lightY + this.height - 20;
+  // }
+  // leftLight() {
+  //   return this.lightX + 10;
+  // }
+  // rightLight() {
+  //   return this.lightX + this.width - 10;
+  // }
+
+  crashWithLight(obstacle) {
+    return !(
+      this.bottomLight() < obstacle.top() ||
+      this.topLight() > obstacle.bottom() ||
+      this.rightLight() < obstacle.left() ||
+      this.leftLight() > obstacle.right()
+    );
+  }
 }
 
 // objetos
 
-// const light = new Component("./img/ufolight.png");
 const ufo = new Component(136, 65, 100, 100);
-
-// const comet = new Obstacle("./img/obstacles/comet.png", 800, 90);
-// const asteroid = new Obstacle("./img/obstacles/asteroid.png", 900, 170);
-// const missile = new Obstacle("./img/obstacles/missile.png", 1000, 250);
 
 const lifeHearts = new Object();
 
@@ -289,10 +458,6 @@ myGameArea.PlayAgainBtn.addEventListener("click", () => {
   location.reload();
 });
 
-// manipulação do Canvas
-
-// ufo.draw();
-
 // movimento ao pressionar
 
 document.addEventListener("keydown", (e) => {
@@ -300,39 +465,25 @@ document.addEventListener("keydown", (e) => {
   if (key === "ArrowUp") {
     if (ufo.y > 10) {
       ufo.moveUp();
-      console.log("pra cima");
-      // ufo.clear();
-      // ufo.newPos();
-      // ufo.draw();
     }
   }
   if (key === "ArrowDown") {
     if (ufo.y < 220) {
       ufo.moveDown();
-      // ufo.clear();
-      // ufo.newPos();
-      // ufo.draw();
     }
   }
   if (key === "ArrowLeft") {
     if (ufo.x > 7) {
       ufo.moveLeft();
-      // ufo.clear();
-      // ufo.newPos();
-      // ufo.draw();
     }
   }
   if (key === "ArrowRight") {
     if (ufo.x < 757) {
       ufo.moveRight();
-      // ufo.clear();
-      // ufo.newPos();
-      // ufo.draw();
     }
   }
 
   if (key === "Space") {
-    // ufo.draw();
     ufo.lightOn = true;
   }
 });
