@@ -3,6 +3,8 @@ console.log("Js conectado");
 const myObstacles = [];
 const myNpc = [];
 const capturedNpc = [];
+const map = new Image();
+map.src = "./img/map.png";
 
 const myGameArea = {
   canvas: document.getElementById("canvas"),
@@ -15,6 +17,7 @@ const myGameArea = {
   frames: 0,
   live: 3,
   points: 0,
+  map: new Image(),
 
   clear: function () {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -22,8 +25,10 @@ const myGameArea = {
 
   score: function () {
     // this.points = Math.floor(this.frames / 100);
-    this.ctx.font = "30px serif";
-    this.ctx.fillText(`Score: ${this.points}`, 750, 60);
+    this.ctx.font = "35px serif";
+    // this.ctx.font = "35px serif";
+    this.ctx.fillText(`Score: ${this.points}`, 400, 40);
+    // this.ctx.fillStroke(`Score: ${this.points}`, 400, 60);
   },
 };
 
@@ -67,90 +72,69 @@ function updateObstacles() {
   });
 }
 
-// img: ,
-// name: ,
-// type: ,
-// value: ,
-
-const obstacleArr = [
-  {
-    img: "./img/npc/cow2.png",
-    name: "cow",
-    type: "good",
-    value: 100,
-  },
-  {
-    img: "./img/npc/boy2.png",
-    name: "boy",
-    type: "good",
-    value: 100,
-  },
-  {
-    img: "./img/npc/girl.png",
-    name: "Girl",
-    type: "good",
-    value: 100,
-  },
-  {
-    img: "./img/npc/girl.png",
-    name: "radioactive",
-    type: "bad",
-    value: -200,
-  },
-  // {
-  //   img: ,
-  //   name: ,
-  //   type: ,
-  //   value: ,
-  // },
-];
-
 function updateNpc() {
   if (myGameArea.frames % 60 === 0) {
-    const npcArr = [
-      "./img/npc/cow2.png",
-      "./img/npc/boy2.png",
-      "./img/npc/girl.png",
-    ];
     // const npcArr = [
-    //   {
-    //     img: "./img/npc/cow2.png",
-    //     name: "cow",
-    //     type: "good",
-    //     value: 100,
-    //   },
-    //   {
-    //     img: "./img/npc/boy2.png",
-    //     name: "boy",
-    //     type: "good",
-    //     value: 100,
-    //   },
-    //   {
-    //     img: "./img/npc/girl.png",
-    //     name: "Girl",
-    //     type: "good",
-    //     value: 100,
-    //   },
-    //   {
-    //     img: "./img/npc/girl.png",
-    //     name: "radioactive",
-    //     type: "bad",
-    //     value: -200,
-    //   },
-    //   // {
-    //   //   img: ,
-    //   //   name: ,
-    //   //   type: ,
-    //   //   value: ,
-    //   // },
+    //   "./img/npc/cow2.png",
+    //   "./img/npc/boy2.png",
+    //   "./img/npc/girl.png",
     // ];
+    const npcArr = [
+      {
+        img: "./img/npc/cow4.png",
+        name: "cow",
+        type: "good",
+        value: 100,
+      },
+      {
+        img: "./img/npc/boy2.png",
+        name: "boy",
+        type: "good",
+        value: 100,
+      },
+      {
+        img: "./img/npc/girl.png",
+        name: "Girl",
+        type: "good",
+        value: 100,
+      },
+      {
+        img: "./img/npc/radioactive.png",
+        name: "radioactive",
+        type: "bad",
+        value: -200,
+      },
+
+      // {
+      //   img: "./img/npc/bomb.png",
+      //   name: "bomb",
+      //   type: "bad",
+      //   value: -150,
+      // },
+
+      // {
+      //   img: ,
+      //   name: ,
+      //   type: ,
+      //   value: ,
+      // },
+    ];
 
     const xArr = [50, 150, 300, 450, 600, 750, 900];
     const randomX = Math.floor(Math.random() * xArr.length);
     const randomIndex = Math.floor(Math.random() * npcArr.length);
 
     // myObstacles.push(new Obstacle("./img/obstacles/comet.png", 900, 70));
-    myNpc.push(new Npc(npcArr[randomIndex], xArr[randomX], 370));
+    myNpc.push(
+      new Npc(
+        npcArr[randomIndex].name,
+        npcArr[randomIndex].type,
+        npcArr[randomIndex].img,
+        npcArr[randomIndex].value,
+        xArr[randomX],
+        370
+      )
+    );
   }
 
   myNpc.forEach((element, i) => {
@@ -164,8 +148,21 @@ function updateNpc() {
     if (ufo.lightOn) {
       if (crash) {
         // console.log("acertou");
+        console.log(`Element Atual:`, element);
+        console.log(`Element Type Atual:`, element.type);
+        console.log(`Element Value Atual:`, element.value);
+        // if (element.type === "good") myGameArea.points += element.value;
+        // if (element.type === "bad") myGameArea.points += element.value;
+
+        // switch (element.type) {
+        //   case "good":
+        //     myGameArea.points += element.value;
+        //     break;
+        //   case "bad":
+        //     myGameArea.points += element.value;
+        // }
         myNpc.splice(i, 1);
-        myGameArea.points += 100;
+        myGameArea.points += element.value;
         // let capturedNpc = element;
 
         console.log(">>>>>>Crash");
@@ -180,13 +177,13 @@ function updateNpc() {
 
 function drawLives() {
   if (myGameArea.live === 3)
-    myGameArea.ctx.drawImage(lifeHearts.full, 30, 30, 95, 26);
+    myGameArea.ctx.drawImage(lifeHearts.full, 30, 10, 119, 35);
   if (myGameArea.live === 2)
-    myGameArea.ctx.drawImage(lifeHearts.twoHearts, 30, 30, 95, 26);
+    myGameArea.ctx.drawImage(lifeHearts.twoHearts, 30, 10, 117, 35);
   if (myGameArea.live === 1)
-    myGameArea.ctx.drawImage(lifeHearts.oneHeart, 30, 30, 95, 26);
+    myGameArea.ctx.drawImage(lifeHearts.oneHeart, 30, 10, 117, 35);
   if (myGameArea.live === 0)
-    myGameArea.ctx.drawImage(lifeHearts.empty, 30, 30, 95, 26);
+    myGameArea.ctx.drawImage(lifeHearts.empty, 30, 10, 117, 35);
 }
 
 function updateGameArea() {
@@ -199,6 +196,7 @@ function updateGameArea() {
   updateObstacles();
   // console.log(myNpc);
   drawLives();
+  myGameArea.ctx.drawImage(map, 750, 0);
   myGameArea.score();
 
   if (!myGameArea.stop) {
@@ -251,7 +249,7 @@ class Obstacle {
 }
 
 class Npc {
-  constructor(img, x, y) {
+  constructor(name, type, img, value, x, y) {
     const image = new Image();
     image.src = img;
     image.onload = () => {
@@ -259,7 +257,9 @@ class Npc {
       this.width = image.width;
       this.height = image.height;
     };
-
+    this.name = name;
+    this.type = type;
+    this.value = value;
     this.x = x;
     this.y = y;
     this.speed = 5;

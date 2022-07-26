@@ -86,7 +86,7 @@ canvas {
 footer {
   display: flex;
   flex-direction: row;
-  font-size: 25px;
+  font-size: 20px;
   align-items: center;
 }
 
@@ -96,8 +96,8 @@ footer p {
 }
 
 footer img {
-  width: 27px;
-  height: 27px;
+  width: 20px;
+  height: 20px;
 }
 
 #game-over {
