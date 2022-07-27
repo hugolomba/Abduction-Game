@@ -6,6 +6,11 @@ const capturedNpc = [];
 const map = new Image();
 map.src = "./img/map.png";
 
+// AUDIO
+
+let backgroundSound = new Audio();
+backgroundSound.src = "./sounds/backgroundMusic.mp3";
+
 const myGameArea = {
   canvas: document.getElementById("canvas"),
   startScreen: document.getElementById("start-screen"),
@@ -18,6 +23,13 @@ const myGameArea = {
   live: 3,
   points: 0,
   map: new Image(),
+  backgroundSound: new Audio("./sounds/backgroundMusic.mp3"),
+
+  playBackgroundSound() {
+    this.backgroundSound.loop = true;
+    this.backgroundSound.volume = 0.3;
+    this.backgroundSound.play();
+  },
 
   clear: function () {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -59,11 +71,11 @@ function updateObstacles() {
     const crash = ufo.crashWith(element);
     if (crash) {
       myGameArea.live -= 1;
-      myGameArea.points -= 200;
 
       if (myGameArea.live < 1) {
         myGameArea.stop = true;
         myGameArea.gameOverScreen.style.display = "flex";
+        myGameArea.backgroundSound.pause();
       }
       myObstacles.splice(i, 1);
     }
@@ -116,7 +128,7 @@ function updateNpc() {
       // },
     ];
 
-    const xArr = [50, 200, 350, 500, 650, 800];
+    const xArr = [50, 250, 450, 650, 800];
     const randomX = Math.floor(Math.random() * xArr.length);
     const randomIndex = Math.floor(Math.random() * npcArr.length);
 
@@ -436,6 +448,7 @@ myGameArea.startBtn.addEventListener("click", () => {
   myGameArea.startScreen.style.display = "none";
   myGameArea.canvas.style.display = "inline";
   updateGameArea();
+  myGameArea.playBackgroundSound();
 });
 
 myGameArea.PlayAgainBtn.addEventListener("click", () => {
