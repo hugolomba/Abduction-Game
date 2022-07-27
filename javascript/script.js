@@ -24,10 +24,11 @@ const myGameArea = {
   },
 
   score: function () {
-    // this.points = Math.floor(this.frames / 100);
     this.ctx.font = "35px serif";
     // this.ctx.font = "35px serif";
+    if (this.points < 0) this.points = 0;
     this.ctx.fillText(`Score: ${this.points}`, 400, 40);
+
     // this.ctx.fillStroke(`Score: ${this.points}`, 400, 60);
   },
 };
@@ -58,7 +59,7 @@ function updateObstacles() {
     const crash = ufo.crashWith(element);
     if (crash) {
       myGameArea.live -= 1;
-      myGameArea.points -= 10;
+      myGameArea.points -= 200;
 
       if (myGameArea.live < 1) {
         myGameArea.stop = true;
@@ -73,12 +74,7 @@ function updateObstacles() {
 }
 
 function updateNpc() {
-  if (myGameArea.frames % 60 === 0) {
-    // const npcArr = [
-    //   "./img/npc/cow2.png",
-    //   "./img/npc/boy2.png",
-    //   "./img/npc/girl.png",
-    // ];
+  if (myGameArea.frames % 180 === 0) {
     const npcArr = [
       {
         img: "./img/npc/cow4.png",
@@ -120,56 +116,42 @@ function updateNpc() {
       // },
     ];
 
-    const xArr = [50, 150, 300, 450, 600, 750, 900];
+    const xArr = [50, 200, 350, 500, 650, 800];
     const randomX = Math.floor(Math.random() * xArr.length);
     const randomIndex = Math.floor(Math.random() * npcArr.length);
 
-    // myObstacles.push(new Obstacle("./img/obstacles/comet.png", 900, 70));
-    myNpc.push(
-      new Npc(
-        npcArr[randomIndex].name,
-        npcArr[randomIndex].type,
-        npcArr[randomIndex].img,
-        npcArr[randomIndex].value,
-        xArr[randomX],
-        370
-      )
-    );
-  }
+    // let npcHeart = false;
+    // if (myGameArea.frames % 180 === 0) npcHeart = true;
+    // if (myGameArea.frames % 180 !== 0) npcHeart = true;
+
+    if (myNpc.every((npc) => npc.x !== xArr[randomX])) {
+      // if (npcHeart) randomIndex = 0;
+      myNpc.push(
+        new Npc(
+          npcArr[randomIndex].name,
+          npcArr[randomIndex].type,
+          npcArr[randomIndex].img,
+          npcArr[randomIndex].value,
+          xArr[randomX],
+          370
+        )
+      );
+    }
+  } // >>>>>>>>>>> O PROBLEMA PODE SER AQUI
+
+  console.log(`myNpc: ${myNpc}`);
 
   myNpc.forEach((element, i) => {
-    // element.move();
-    element.clear();
     element.draw();
-
-    // if (myNpc.length > 10) myNpc.splice(0, 4);
 
     const crash = ufo.crashWithLight(element);
     if (ufo.lightOn) {
       if (crash) {
-        // console.log("acertou");
-        console.log(`Element Atual:`, element);
-        console.log(`Element Type Atual:`, element.type);
-        console.log(`Element Value Atual:`, element.value);
-        // if (element.type === "good") myGameArea.points += element.value;
-        // if (element.type === "bad") myGameArea.points += element.value;
-
-        // switch (element.type) {
-        //   case "good":
-        //     myGameArea.points += element.value;
-        //     break;
-        //   case "bad":
-        //     myGameArea.points += element.value;
-        // }
         myNpc.splice(i, 1);
         myGameArea.points += element.value;
         // let capturedNpc = element;
 
         console.log(">>>>>>Crash");
-        capturedNpc.push(element);
-        console.log(capturedNpc);
-        // if (element.img.src === "./img/npc/girl.png")
-        //   console.log("ABDUZIU UMA MENINA");
       }
     }
   });
@@ -221,6 +203,8 @@ class Obstacle {
     this.x = x;
     this.y = y;
     this.speed = 5;
+    this.targetX = this.x;
+    this.targetY = this.y;
   }
 
   draw() {
@@ -230,8 +214,6 @@ class Obstacle {
 
   move() {
     this.x = this.x - this.speed;
-    // this.x += (this.x - this.x) * 0.1;
-    // if (this.x <= 0) this.x = 800;
   }
 
   top() {
@@ -295,10 +277,12 @@ class Npc {
 
   crashWithLight(obstacle) {
     return !(
-      this.bottom() < obstacle.top() ||
-      this.top() > obstacle.bottom() ||
-      this.right() < obstacle.left() ||
-      this.left() > obstacle.right()
+      // this.bottom() < obstacle.top() ||
+      (
+        this.top() > obstacle.bottom() ||
+        this.right() < obstacle.left() ||
+        this.left() > obstacle.right()
+      )
     );
   }
 }
@@ -396,16 +380,16 @@ class Component {
   }
 
   topLight() {
-    // return this.lightY;
+    return this.lightY;
   }
   bottomLight() {
     return this.lightY + this.height + 200;
   }
   leftLight() {
-    return this.lightX + 40;
+    return this.lightX + 55; // lado esquerdo da luz + diminui
   }
   rightLight() {
-    return this.lightX + this.width - 40; // lado direito da luz
+    return this.lightX + this.width - 55; // lado direito da luz - diminui
   }
 
   // topLight() {
