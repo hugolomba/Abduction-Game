@@ -6,6 +6,12 @@ const capturedNpc = [];
 const map = new Image();
 map.src = "./img/map.png";
 
+// teste sprite
+
+let testUfo = {
+  img: new Image("./img/sprite-ufo.png"),
+};
+
 const myGameArea = {
   canvas: document.getElementById("canvas"),
   startScreen: document.getElementById("start-screen"),
@@ -322,9 +328,11 @@ class Npc {
 class Component {
   constructor(width, height, x, y) {
     this.img = new Image();
-    this.img.src = "./img/ufo2.png";
+    this.img.src = "./img/sprite-ufo2.png";
+    this.xCut = 0;
+
     this.img2 = new Image();
-    this.img2.src = "./img/ufo2-esp.png";
+    this.img2.src = "./img/sprite-ufo-light.png";
     this.width = width;
     this.height = height;
     this.x = x;
@@ -366,8 +374,38 @@ class Component {
 
   draw() {
     // this.img.addEventListener("load", () =>
-    if (this.y < 210) myGameArea.ctx.drawImage(this.img, this.x, this.y);
-    if (this.y >= 210) myGameArea.ctx.drawImage(this.img2, this.x, this.y);
+    // let xCut = 0;
+
+    if (this.y < 210) {
+      myGameArea.ctx.drawImage(
+        this.img,
+        this.xCut,
+        0,
+        136,
+        65,
+        this.x,
+        this.y,
+        136,
+        65
+      );
+      if (myGameArea.frames % 10 === 0) this.xCut += 136;
+      if (this.xCut > 680) this.xCut = 0;
+    }
+    if (this.y >= 210) {
+      myGameArea.ctx.drawImage(
+        this.img2,
+        this.xCut,
+        0,
+        136,
+        65,
+        this.x,
+        this.y,
+        136,
+        65
+      );
+      if (myGameArea.frames % 10 === 0) this.xCut += 136;
+      if (this.xCut > 680) this.xCut = 0;
+    }
     // );
   }
 
