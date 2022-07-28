@@ -6,11 +6,6 @@ const capturedNpc = [];
 const map = new Image();
 map.src = "./img/map.png";
 
-// AUDIO
-
-let backgroundSound = new Audio();
-backgroundSound.src = "./sounds/backgroundMusic.mp3";
-
 const myGameArea = {
   canvas: document.getElementById("canvas"),
   startScreen: document.getElementById("start-screen"),
@@ -70,6 +65,7 @@ function updateObstacles() {
     element.draw();
     const crash = ufo.crashWith(element);
     if (crash) {
+      ufo.playCrashSound();
       myGameArea.live -= 1;
 
       if (myGameArea.live < 1) {
@@ -149,9 +145,7 @@ function updateNpc() {
         )
       );
     }
-  } // >>>>>>>>>>> O PROBLEMA PODE SER AQUI
-
-  console.log(`myNpc: ${myNpc}`);
+  }
 
   myNpc.forEach((element, i) => {
     element.draw();
@@ -160,6 +154,7 @@ function updateNpc() {
     if (ufo.lightOn) {
       if (crash) {
         myNpc.splice(i, 1);
+        element.playCatchSound();
         myGameArea.points += element.value;
         // let capturedNpc = element;
 
@@ -186,7 +181,8 @@ function updateGameArea() {
   ufo.move();
   ufo.draw();
   ufo.drawLight();
-
+  // if (ufo.y > 226) ufo.playLightReadySound(); // tentativa de colocar som quando chegar no lugar da luz
+  // if (ufo.y < 226) ufo.pauseLightReadySound();
   updateObstacles();
   // console.log(myNpc);
   drawLives();
@@ -197,8 +193,6 @@ function updateGameArea() {
     requestAnimationFrame(updateGameArea);
   }
 }
-
-// setInterval(updateGameArea, 50000);
 
 // Classes
 
@@ -257,6 +251,12 @@ class Npc {
     this.x = x;
     this.y = y;
     this.speed = 5;
+    this.catchSound = new Audio("./sounds/catch.wav");
+  }
+
+  playCatchSound() {
+    this.catchSound.volume = 0.4;
+    this.catchSound.play();
   }
 
   draw() {
@@ -315,10 +315,32 @@ class Component {
     this.light = new Image();
     this.light.src = "./img/ufolight.png";
     this.lightOn = false;
+    this.lightReadySound = new Audio("./sounds/test.wav");
     this.lightX = 0;
     this.lightY = 0;
+    this.abductionSound = new Audio("./sounds/abduction.wav");
+    this.crashSound = new Audio("./sounds/crash.wav");
+
     // this.speedX = 0;
     // this.speedY = 0;
+  }
+
+  playCrashSound() {
+    this.crashSound.play();
+  }
+
+  playLightReadySound() {
+    this.lightReadySound.volume = 1;
+    this.lightReadySound.play();
+  }
+
+  pauseLightReadySound() {
+    this.lightReadySound.pause();
+  }
+
+  playAbductionSound() {
+    this.abductionSound.volume = 0.3;
+    this.abductionSound.play();
   }
 
   draw() {
@@ -363,6 +385,8 @@ class Component {
       this.lightY = this.y + 60;
       // let lightX = this.x + 12;
       // let lightY = this.y + 60;
+
+      this.playAbductionSound();
       myGameArea.ctx.drawImage(this.light, this.lightX, this.lightY, 113, 168);
 
       // console.log(`lightX: ${this.lightX} LightY: ${this.lightY}`);
