@@ -40,10 +40,15 @@ const myGameArea = {
   },
 };
 
+let dificulty = 120;
 function updateObstacles() {
   myGameArea.frames += 1;
+
+  if (myGameArea.frames % 1200 === 0) dificulty -= 20;
+  if (dificulty < 60) dificulty = 60;
+
   // if (myGameArea.frames % 30 === 0) myGameArea.points += 1; // pontuação
-  if (myGameArea.frames % 120 === 0) {
+  if (myGameArea.frames % dificulty === 0) {
     const obstacleArr = [
       "./img/obstacles/comet.png",
       "./img/obstacles/asteroid.png",
@@ -128,6 +133,8 @@ function updateNpc() {
     const randomX = Math.floor(Math.random() * xArr.length);
     const randomIndex = Math.floor(Math.random() * npcArr.length);
 
+    // sistema de ganahr vidas
+
     // let npcHeart = false;
     // if (myGameArea.frames % 180 === 0) npcHeart = true;
     // if (myGameArea.frames % 180 !== 0) npcHeart = true;
@@ -147,6 +154,18 @@ function updateNpc() {
     }
   }
 
+  console.log("Antes: ", myNpc);
+  if (myGameArea.frames % 1200 === 0) {
+    let randomIndex = Math.floor(Math.random() * myNpc.length);
+    console.log("1: ", randomIndex);
+    myNpc.splice(randomIndex, 1);
+    randomIndex = Math.floor(Math.random() * myNpc.length);
+    console.log("2: ", randomIndex);
+    myNpc.splice(randomIndex, 1);
+    console.log(">>>>>>>>");
+    console.log("Depois: ", myNpc);
+  }
+
   myNpc.forEach((element, i) => {
     element.draw();
 
@@ -157,8 +176,6 @@ function updateNpc() {
         element.playCatchSound();
         myGameArea.points += element.value;
         // let capturedNpc = element;
-
-        console.log(">>>>>>Crash");
       }
     }
   });
@@ -309,7 +326,7 @@ class Component {
     this.height = height;
     this.x = x;
     this.y = y;
-    this.speed = 50;
+    this.speed = 55;
     this.targetX = this.x;
     this.targetY = this.y;
     this.light = new Image();
@@ -394,13 +411,13 @@ class Component {
   }
 
   top() {
-    return this.y + 20;
+    return this.y + 30;
   }
   bottom() {
     return this.y + this.height - 20;
   }
   left() {
-    return this.x + 10;
+    return this.x + 50;
   }
   right() {
     return this.x + this.width - 10;
