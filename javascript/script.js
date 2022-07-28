@@ -31,10 +31,16 @@ const myGameArea = {
   },
 
   score: function () {
-    this.ctx.font = "35px serif";
-    // this.ctx.font = "35px serif";
+    this.ctx.font = "40px serif";
+
     if (this.points < 0) this.points = 0;
-    this.ctx.fillText(`Score: ${this.points}`, 400, 40);
+    this.ctx.fillText(`Score: ${this.points}`, 385, 50);
+    this.ctx.setLineDash([15, 7]);
+    this.ctx.strokeRect(360, 10, 220, 55);
+
+    // this.ctx.strokeStyle = "black";
+    // this.ctx.strokeStyle = "white";
+    // this.ctx.strokeText(`Score: ${this.points}`, 400, 40);
 
     // this.ctx.fillStroke(`Score: ${this.points}`, 400, 60);
   },
@@ -154,16 +160,13 @@ function updateNpc() {
     }
   }
 
-  console.log("Antes: ", myNpc);
+  console.log(myGameArea.frames);
   if (myGameArea.frames % 1200 === 0) {
     let randomIndex = Math.floor(Math.random() * myNpc.length);
-    console.log("1: ", randomIndex);
-    myNpc.splice(randomIndex, 1);
-    randomIndex = Math.floor(Math.random() * myNpc.length);
-    console.log("2: ", randomIndex);
-    myNpc.splice(randomIndex, 1);
-    console.log(">>>>>>>>");
-    console.log("Depois: ", myNpc);
+    myNpc.splice(randomIndex, myNpc.length - 2);
+    console.log("removido");
+    // randomIndex = Math.floor(Math.random() * myNpc.length);
+    // myNpc.splice(randomIndex, 1);
   }
 
   myNpc.forEach((element, i) => {
@@ -343,6 +346,7 @@ class Component {
   }
 
   playCrashSound() {
+    this.crashSound.volume = 0.3;
     this.crashSound.play();
   }
 
