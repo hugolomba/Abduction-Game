@@ -13,6 +13,21 @@
   src: url(../KGSummerSunshineShadow.ttf);
 }
 
+@font-face {
+  font-family: Modular;
+  src: url(./MODULAR-14.otf);
+}
+
+@font-face {
+  font-family: Adventure;
+  src: url(../Adventure.ttf);
+}
+
+@font-face {
+  font-family: Mokoto;
+  src: url(../Mokoto\ Glitch\ Mark\ 2.otf);
+}
+
 body {
   display: flex;
   justify-content: space-around;
@@ -35,7 +50,8 @@ canvas {
 }
 
 #start-screen {
-  font-family: SunshineShadow;
+  font-family: Adventure;
+  /* letter-spacing: -3px; */
   border: 5px solid black;
   width: 900px;
   height: 500px;
@@ -49,26 +65,124 @@ canvas {
   background-color: rgba(255, 255, 255, 0.5);
 }
 
+#instructions-screen {
+  display: none;
+  width: 690px;
+  height: 476px;
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  top: 23px;
+  z-index: 1;
+  /* width: 518px;
+  height: 352px;
+  background-image: url(../img/background-start-test.png); */
+  border-radius: 40px;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#instructions-screen p {
+  margin: 0 20px;
+  text-align: center;
+}
+
+/* #move-and-light p {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+} */
+
+#instruction-points {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#instruction-points img {
+  width: 350px;
+  height: auto;
+}
+
+#instructions-image {
+  margin: 0, 20px;
+}
+
+#instructions-screen ul {
+  /* display: flex; */
+}
+
+#instructions-screen p,
+ul {
+  font-family: serif;
+}
+
+.light-use-instruction {
+  width: 130px;
+  height: auto;
+}
+
+.move-instruction {
+  width: 110px;
+  height: auto;
+}
+
+#title-ufo {
+  /* position: absolute; */
+  width: 236px;
+  height: auto;
+  top: 18px;
+  /* bottom: 100px; */
+  left: 900px;
+  z-index: 0;
+  /* right: 170px; */
+  /* opacity: 0.8; */
+  /* animation: go-back 5s infinite alternate; */
+}
+@keyframes go-back {
+  from {
+    transform: translateX(0px);
+  }
+  to {
+    transform: translateX(550px);
+  }
+}
+
+#instructions-screen h1 {
+  font-size: 30px;
+}
+
 #start-screen-elements {
   width: 600px;
   height: 300px;
+  /* width: 518px;
+  height: 352px;
+  background-image: url(../img/background-start-test.png); */
   border-radius: 40px;
   display: flex;
   flex-direction: column;
   align-content: stretch;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.7);
+  /* background-color: rgba(255, 255, 255, 0.7); */
 }
 
 #start-screen-elements h1 {
-  margin: 0;
+  color: rgb(255, 255, 255);
+  margin: 45px;
+  /* text-shadow: 7px 5px 10px rgb(0 0 0); */
+  position: absolute;
+  z-index: 1;
+  top: 120px;
+  -webkit-text-stroke-width: 2.5px;
+  -webkit-text-stroke-color: #000;
 }
 
-#start-screen h1 {
-  font-size: 70px;
+.title {
+  font-size: 90px;
   font-weight: 100;
   font-style: normal;
+  /* text-shadow */
 }
 
 #start-btn {
@@ -77,6 +191,32 @@ canvas {
   font-size: 30px;
   border-radius: 10px;
   background-color: white;
+  position: absolute;
+  z-index: 1;
+  top: 310px;
+}
+
+#instructions-btn {
+  width: 180px;
+  height: 50px;
+  font-size: 30px;
+  border-radius: 10px;
+  background-color: white;
+  position: absolute;
+  z-index: 1;
+  top: 375px;
+}
+
+#back-btn {
+  width: 40px;
+  height: 40px;
+  font-size: 30px;
+  border-radius: 10px;
+  background-color: white;
+  position: absolute;
+  z-index: 1;
+  top: -11px;
+  right: 39px;
 }
 
 #play-again-btn {

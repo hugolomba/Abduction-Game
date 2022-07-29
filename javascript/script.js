@@ -6,18 +6,16 @@ const capturedNpc = [];
 const map = new Image();
 map.src = "./img/map.png";
 
-// teste sprite
-
-let testUfo = {
-  img: new Image("./img/sprite-ufo.png"),
-};
-
 const myGameArea = {
   canvas: document.getElementById("canvas"),
   startScreen: document.getElementById("start-screen"),
   startBtn: document.getElementById("start-btn"),
   gameOverScreen: document.getElementById("game-over"),
   PlayAgainBtn: document.getElementById("play-again-btn"),
+  instructionsBtn: document.getElementById("instructions-btn"),
+  instructionsScreen: document.getElementById("instructions-screen"),
+  startScreenElements: document.getElementById("start-screen-elements"),
+  backBtn: document.getElementById("back-btn"),
   ctx: this.canvas.getContext("2d"),
   stop: false,
   frames: 0,
@@ -42,7 +40,7 @@ const myGameArea = {
     if (this.points < 0) this.points = 0;
     this.ctx.fillText(`Score: ${this.points}`, 385, 50);
     this.ctx.setLineDash([15, 7]);
-    this.ctx.strokeRect(360, 10, 220, 55);
+    this.ctx.strokeRect(370, 10, 220, 55);
 
     // this.ctx.strokeStyle = "black";
     // this.ctx.strokeStyle = "white";
@@ -102,25 +100,25 @@ function updateNpc() {
   if (myGameArea.frames % 180 === 0) {
     const npcArr = [
       {
-        img: "./img/npc/cow4.png",
+        img: "./img/npc/cow-sprite.png",
         name: "cow",
         type: "good",
-        value: 100,
+        value: 50,
       },
       {
-        img: "./img/npc/boy2.png",
+        img: "./img/npc/boy-sprite.png",
         name: "boy",
         type: "good",
         value: 100,
       },
       {
-        img: "./img/npc/girl.png",
+        img: "./img/npc/girl-sprite2.png",
         name: "Girl",
         type: "good",
         value: 100,
       },
       {
-        img: "./img/npc/radioactive.png",
+        img: "./img/npc/radioactive-sprite.png",
         name: "radioactive",
         type: "bad",
         value: -200,
@@ -212,7 +210,7 @@ function updateGameArea() {
   updateObstacles();
   // console.log(myNpc);
   drawLives();
-  myGameArea.ctx.drawImage(map, 750, 0);
+  myGameArea.ctx.drawImage(map, 650, 10, 240, 55);
   myGameArea.score();
 
   if (!myGameArea.stop) {
@@ -237,11 +235,25 @@ class Obstacle {
     this.speed = 5;
     this.targetX = this.x;
     this.targetY = this.y;
+    this.xCut = 0;
   }
 
   draw() {
     if (!this.img) return;
     myGameArea.ctx.drawImage(this.img, this.x, this.y);
+    // myGameArea.ctx.drawImage(
+    //   this.img,
+    //   this.xCut,
+    //   0,
+    //   91,
+    //   62,
+    //   this.x,
+    //   this.y,
+    //   91,
+    //   62
+    // );
+    if (myGameArea.frames % 25 === 0) this.xCut += 91;
+    if (this.xCut > 273) this.xCut = 0;
   }
 
   move() {
@@ -274,6 +286,7 @@ class Npc {
     this.name = name;
     this.type = type;
     this.value = value;
+    this.xCut = 0;
     this.x = x;
     this.y = y;
     this.speed = 5;
@@ -287,7 +300,20 @@ class Npc {
 
   draw() {
     if (!this.img) return;
-    myGameArea.ctx.drawImage(this.img, this.x, this.y);
+    // myGameArea.ctx.drawImage(this.img, this.x, this.y);
+    myGameArea.ctx.drawImage(
+      this.img,
+      this.xCut,
+      0,
+      60,
+      80,
+      this.x,
+      this.y,
+      60,
+      80
+    );
+    if (myGameArea.frames % 25 === 0) this.xCut += 60;
+    if (this.xCut > 180) this.xCut = 0;
   }
 
   clear() {
@@ -481,7 +507,7 @@ class Component {
     return this.lightY + this.height + 200;
   }
   leftLight() {
-    return this.lightX + 55; // lado esquerdo da luz + diminui
+    return this.lightX + 220; // lado esquerdo da luz + diminui
   }
   rightLight() {
     return this.lightX + this.width - 55; // lado direito da luz - diminui
@@ -532,6 +558,13 @@ myGameArea.startBtn.addEventListener("click", () => {
   myGameArea.canvas.style.display = "inline";
   updateGameArea();
   myGameArea.playBackgroundSound();
+});
+
+myGameArea.instructionsBtn.addEventListener("click", () => {
+  myGameArea.instructionsScreen.style.display = "flex";
+  myGameArea.backBtn.addEventListener("click", () => {
+    myGameArea.instructionsScreen.style.display = "none";
+  });
 });
 
 myGameArea.PlayAgainBtn.addEventListener("click", () => {
