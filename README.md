@@ -6,6 +6,7 @@ Project #1 - Web Development - IRONHACK
 
 You are passing through a little planet called Earth.
 Your objective is to accumulate points by abducting the beings that appear on your way, while avoiding obstacles that damage your ship and can destroy you.
+
 This planet has diverse beings and each one provides a different score when abducted. The inhabitants of the planet also produce dangerous things, be careful when abducting them, as they lower your score.
 
 ## Controls
