@@ -4,9 +4,9 @@ Project #1 - Web Development - IRONHACK
 
 ## Introduction
 
-You are UFO pilot passing through a little planet called Earth.
+You are a UFO pilot passing through a little planet called Earth.
 
-Your objective is to accumulate points by abducting the beings that appear on your way, while avoiding obstacles that damage your ship and can destroy you.
+Your objective is to accumulate points by abducting the beings that appear on your way while avoiding obstacles that damage your ship and can destroy you.
 
 <img src="./img/README-images/demo-img.png">
 
