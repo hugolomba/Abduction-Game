@@ -12,11 +12,12 @@ Your objective is to accumulate points by abducting the beings that appear on yo
 
 ## Features
 
-- Sua espaçonave possui uma poderosa luz que pode ser usada para abduzir o que ela atingir. A luz só pode ser usada an altitude correta de abdução, a nave muda de aparencia e acende suas luzes, indicando que o sistema de abdução está pronto para ser usado
+- Your spaceship has a powerful light that can be used to abduct thing. The abduction light can only be used at the correct altitude.
+  The ship's lights will come on when the abduction system is activated.
 
 <img src="./img/README-images/lightactivation.gif">
 
-- Cada impacto remove uma vida, representada por um coração. Ao zerar o número de vidas, o jogo acaba
+- Each impact removes one life, represented by a heart. When the number of lives is zero, the game ends.
 
 <img src="./img/README-images/gameover.gif">
 
@@ -24,18 +25,18 @@ Your objective is to accumulate points by abducting the beings that appear on yo
 
 <img src="./img/README-images/introduction-points.png">
 
-- A velocidade e a quantidade de obstáculos aumentam com o tempo de jogo
-- Periodicamente o seres não abduzidos somem para dar espaço a novos
-- A nave emite um som indicando quando algo for abduzido
-- A tela inicial possui um botão com todas as instruções do jogo, em inglês e portugues.
+- Speed and amount of obstacles increase with game time
+- Periodically, non-abducted beings disappear to make room for new ones
+- The ship emits a sound indicating when something is abducted
+- The start screen has a button with all the game instructions.
 
 ## GamePlay
 
-- As setas do teclado movimentam a nave :arrow_up: :arrow_down: :arrow_left: :arrow_right:
+- Keyboard arrows move the ship
 
 <img src="./img/README-images/keys.png">
 
-- A tecla Espaço ativa a luz de abdução
+- Space key activates the abduction light
 
 <img src="./img/README-images/light-activation.gif">
 
@@ -47,5 +48,5 @@ To play the game, click on the link: http://hugomiranda.me/Abduction-Game/
 
 ## Upcoming Features
 
-- Sistema de evolução do jogador
-- Sistema de escolha de jogador
+- Player evolution system
+- Player choice system
