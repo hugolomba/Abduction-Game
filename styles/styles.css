@@ -87,11 +87,14 @@ canvas {
   text-align: center;
 }
 
-/* #move-and-light p {
+#move-and-light {
   display: flex;
   flex-direction: column;
   align-items: center;
-} */
+  margin-top: 20px;
+  border: 1.5px dashed black;
+  padding-top: 10px;
+}
 
 #instruction-points {
   display: flex;
@@ -255,10 +258,7 @@ footer img {
   border-radius: 20px;
   /* border: 10px solid red; */
   position: absolute;
-  font-family: SunshineShadow;
-  font-size: 25px;
-  font-weight: 100;
-  font-style: normal;
+
   /* display: flex; */
   flex-direction: column;
   align-content: stretch;
@@ -270,4 +270,11 @@ footer img {
 
 #game-over h1 {
   margin: 10px;
+  font-family: Adventure;
+  font-size: 60px;
+  color: rgb(255, 255, 255);
+  -webkit-text-stroke-width: 2.5px;
+  -webkit-text-stroke-color: #000;
+  font-weight: 100;
+  font-style: normal;
 }
