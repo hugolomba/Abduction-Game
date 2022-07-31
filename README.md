@@ -21,7 +21,7 @@ Your objective is to accumulate points by abducting the beings that appear on yo
 
 <img src="./img/README-images/gameover.gif">
 
-- This planet has diverse beings and each one provides a different score when abducted. The inhabitants of the planet also produce dangerous things, be careful when abducting them, as they lower your score.
+- This planet has diverse beings and each one provides a different score when abducted. The planet's inhabitants also produce dangerous things, be careful when abducting them, they lower your score.
 
 <img src="./img/README-images/introduction-points.png">
 

@@ -1,31 +1,6 @@
 @font-face {
-  font-family: Comication;
-  src: url(../Comication.ttf);
-}
-
-@font-face {
-  font-family: Slimfit;
-  src: url(../slimfit_shadowed_demo.otf);
-}
-
-@font-face {
-  font-family: SunshineShadow;
-  src: url(../KGSummerSunshineShadow.ttf);
-}
-
-@font-face {
-  font-family: Modular;
-  src: url(./MODULAR-14.otf);
-}
-
-@font-face {
   font-family: Adventure;
   src: url(../Adventure.ttf);
-}
-
-@font-face {
-  font-family: Mokoto;
-  src: url(../Mokoto\ Glitch\ Mark\ 2.otf);
 }
 
 body {
